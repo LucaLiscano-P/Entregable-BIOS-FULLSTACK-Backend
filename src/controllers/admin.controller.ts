@@ -6,7 +6,8 @@ import { createUserService, deleteUserService, getAllUsersService } from "../ser
 export const adminCreateUser = async (req: Request, res: Response) => {
   try {
     const { name, email, password, rol } = req.body;
-    const user = await createUserService(name, email, password, rol);
+    const {roleAdmin} = req.body; 
+    const user = await createUserService(name, email, password, rol, roleAdmin);
   
     res.status(201).json({ message: "Usuario creado exitosamente", user: user});
   } catch (error: unknown ) {
@@ -17,13 +18,14 @@ export const adminCreateUser = async (req: Request, res: Response) => {
 
 export const adminDeleteUser = async (req: Request, res: Response) => {
     const { id } = req.params;
+    const {role} = req.body; 
 
     if (!id) {
     return res.status(400).json({ message: "El ID es obligatorio" });
     }
 
     try {
-    const deletedUser = await deleteUserService(id);
+    const deletedUser = await deleteUserService(id, role);
         res.status(200).json({ message: "Usuario eliminado exitosamente", user: deletedUser });
     } catch (error: unknown ) {
     return res.status(500).json({ message: "Error al eliminar usuario", error: (error as Error).message });

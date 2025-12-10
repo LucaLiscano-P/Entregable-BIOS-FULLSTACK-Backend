@@ -71,16 +71,25 @@ export const registerService = async (data: TypeRegister) => {
 export const loginService = async (data: TypeLogin) => {
   const { email, password } = data;
 
+  // 1. Validar formato del email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    throw new Error("Formato de email inválido");
+  }
+
+  // 2. Verificar si existe el usuario
   const user = await User.findOne({ email });
   if (!user) {
-    throw new Error("Credenciales invalidas");
+    throw new Error("Credenciales inválidas");
   }
 
+  // 3. Comparar contraseñas
   const isValidPassword = await bcrypt.compare(password, user.password);
   if (!isValidPassword) {
-    throw new Error("Credenciales invalidas");
+    throw new Error("Credenciales inválidas");
   }
 
+  // 4. Generar token JWT
   const token = jwt.sign(
     {
       id: user._id.toString(),
@@ -90,6 +99,7 @@ export const loginService = async (data: TypeLogin) => {
     { expiresIn: "24h" }
   );
 
+  // 5. Respuesta limpia
   const userResponse = {
     id: user._id,
     name: user.name,
@@ -99,6 +109,7 @@ export const loginService = async (data: TypeLogin) => {
 
   return { user: userResponse, token };
 };
+
 
 export const editProfileService = async (
   userId: string,

@@ -41,10 +41,7 @@ export const register = async (
   }
 };
 
-export const login = async (
-  req: Request<{}, {}, TypeLogin>,
-  res: Response
-) => {
+export const login = async (req: Request<{}, {}, TypeLogin>, res: Response) => {
   try {
     const result = await loginService(req.body);
     return res.status(200).json({
@@ -58,10 +55,7 @@ export const login = async (
   }
 };
 
-export const editProfile = async (
-  req: EditProfileRequest,
-  res: Response
-) => {
+export const editProfile = async (req: EditProfileRequest, res: Response) => {
   try {
     const userId = req.userId;
 
