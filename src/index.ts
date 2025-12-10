@@ -9,7 +9,7 @@ import { adminRouter } from "./routes/admin.routes";
 
 
 const app = express();
-const PORT = config.port;
+const PORT = config.port || 3000;
 
 app.use(cors());
 app.use(express.json());
