@@ -21,27 +21,21 @@ export const createUserService = async (
     throw new Error("Formato de email inválido");
   }
 
-  // 3. Validar que el rol solicitado exista
-  const validRoles = ["user", "admin", "superadmin"];
-  if (!validRoles.includes(rol)) {
-    throw new Error("Rol inválido");
-  }
-
-  // 4. Verificar permisos: solo un superadmin puede crear otro admin o superadmin
+  // 3. Verificar permisos: solo un superadmin puede crear otro admin o superadmin
   if (["admin", "superadmin"].includes(rol) && rolAdmin !== "superadmin") {
     throw new Error("No tenés permisos para crear usuarios con rol elevado");
   }
 
-  // 5. Verificar si el email ya existe
+  // 4. Verificar si el email ya existe
   const existUser = await User.findOne({ email });
   if (existUser) {
     throw new Error("Usuario ya existente");
   }
 
-  // 6. Hashear contraseña
+  // 5. Hashear contraseña
   const hashedPassword = await bycript.hash(password, 10);
 
-  // 7. Crear usuario
+  // 6. Crear usuario
   const newUser = await User.create({
     name,
     email,
@@ -49,7 +43,7 @@ export const createUserService = async (
     rol,
   });
 
-  // 8. Retornar info básica
+  // 7. Retornar info básica
   return {
     name: newUser.name,
     email: newUser.email,
