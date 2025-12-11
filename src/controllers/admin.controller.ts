@@ -91,7 +91,7 @@ export const getAllUsers = async (req: RequestWithUser, res: Response) => {
       const { posts, total } = await getAllUsersService(page, limit, category);
   
       return res.status(200).json({
-        message: "Productos obtenidos exitosamente",
+        message: "Usuarios obtenidos exitosamente",
         data: {
           posts,
           pagination: {
