@@ -36,7 +36,6 @@ export const register = async (
       token: result.token,
     });
   } catch (error) {
-    console.error("Register error:", error);
     return res.status(400).json({ message: (error as Error).message });
   }
 };
@@ -50,7 +49,6 @@ export const login = async (req: Request<{}, {}, TypeLogin>, res: Response) => {
       token: result.token,
     });
   } catch (error) {
-    console.error("Login error:", error);
     return res.status(400).json({ message: (error as Error).message });
   }
 };
@@ -69,10 +67,8 @@ export const editProfile = async (req: EditProfileRequest, res: Response) => {
       message: "Perfil actualizado correctamente",
       user: updatedUser,
     });
-  } catch (error: any) {
-    return res.status(400).json({
-      message: error.message || "Error al actualizar el perfil",
-    });
+  } catch (error) {
+    return res.status(400).json({ message: (error as Error).message });
   }
 };
 

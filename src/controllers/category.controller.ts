@@ -1,6 +1,6 @@
 // controllers/category.controller.ts
 import { Request, Response } from "express";
-import { createCategoryService, deleteCategoryService, getCategoriesService, updateCategoryService } from "../services/category.service";
+import { createCategoryService, deleteCategoryService, getCategoriesService, getCategoryByIdService, updateCategoryService } from "../services/category.service";
 
 export const createCategory = async (req: Request, res: Response) => {
   try {
@@ -35,6 +35,26 @@ export const getCategories = async (_req: Request, res: Response) => {
     return res.status(500).json({ message: "SERVER ERROR", error: (error as Error).message });
   }
 };
+
+export const getCategoryById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).json({ message: "El ID es obligatorio" });
+  }
+
+  try {
+    const category = await getCategoryByIdService(id);
+    return res.status(200).json({
+      message: "Categoría obtenida",
+      data: category
+    });
+  } catch (error: unknown) {
+    return res.status(404).json({ 
+      message: (error as Error).message 
+    });
+  }
+}
 
 export const updateCategory = async (req: Request, res: Response) => {
   const { id } = req.params;

@@ -1,5 +1,6 @@
 // services/category.service.ts
 import { Category } from "../models/category.model";
+import mongoose from "mongoose";
 
 export const createCategoryService = async (name: string) => {
   const exists = await Category.findOne({ name });
@@ -13,6 +14,20 @@ export const createCategoryService = async (name: string) => {
 
 export const getCategoriesService = async () => {
   return await Category.find();
+};
+
+export const getCategoryByIdService = async (id: string) => {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new Error("ID inválido");
+  }
+
+  const category = await Category.findById(id);
+  
+  if (!category) {
+    throw new Error("Categoría no encontrada");
+  }
+
+  return category;
 };
 
 export const updateCategoryService = async (id: string, data: any) => {
